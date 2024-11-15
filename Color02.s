@@ -75,7 +75,7 @@ main:
   swi 0
 
   ldr r1, =texto + 3   // Cargar el texto (cuarto carácter "a")
-  mov r2, #2           // Longitud de la "a" (1 byte)
+  mov r2, #2           // Longitud de la "a" (1 byte) + longitud del "\n" (1 byte)
   mov r0, #1           // Descriptor de archivo (stdout)
   mov r7, #4           // syscall número 4 (escribir)
   swi 0
