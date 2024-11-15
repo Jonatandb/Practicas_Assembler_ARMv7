@@ -1,6 +1,17 @@
 #!/bin/bash
+
+ORIGEN=$1
 if [ -z "$1" ]; then
-  echo "No se proporcionaron argumentos. Uso: ./generar.sh <nombre_del_archivo>"
-  exit 1
+  echo "Uso: generar.sh archivo.s"
+else
+  OBJ=${ORIGEN/.s/.o}
+  BIN=${ORIGEN/.s/.exe}
+  echo "Compilando y enlazando $ORIGEN..."
+  as -g -o $OBJ $ORIGEN && gcc -o $BIN $OBJ
 fi
-python gen.py "$1"
+
+# Para poder ejecutar este script, hay que darle permisos ejecutando:
+# chmod +x generar.sh
+
+
+# Para que este archivo se ejecute en Linux, la terminación de las lineas debe ser LF.
