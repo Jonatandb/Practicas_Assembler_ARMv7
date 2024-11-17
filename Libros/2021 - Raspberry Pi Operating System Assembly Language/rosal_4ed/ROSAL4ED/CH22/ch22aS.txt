@@ -1,0 +1,1 @@
+gcc -S -o prog22a prog22a.c

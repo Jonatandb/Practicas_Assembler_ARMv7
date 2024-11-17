@@ -1,0 +1,20 @@
+In Terminal, assemble and compile the program with the following two lines.
+
+	as -o prog3a.o prog3a.s
+	ld -o prog3a prog3a.o
+
+
+Execute the machine code with:
+
+	./prog3a
+
+
+Below are the commands you need to execute in Terminal
+for the listings, Program 3b and Program 3c.
+
+
+	as -o part1.o part1.s
+	as -o part2.o part2.s
+	ld -o allparts part1.o part2.o
+	./allparts
+

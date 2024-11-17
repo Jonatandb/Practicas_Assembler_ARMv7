@@ -1,0 +1,3 @@
+gcc -o testbubblesort prog21b.s prog21d.s prog21e.s
+./testbubblesort
+

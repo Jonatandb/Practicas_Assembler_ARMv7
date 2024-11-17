@@ -1,0 +1,5 @@
+
+	as -o prog7a.o prog7a.s
+	ld -o prog7a prog7a.o
+	./prog7a
+	

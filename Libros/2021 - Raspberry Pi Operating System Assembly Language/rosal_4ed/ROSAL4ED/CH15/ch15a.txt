@@ -1,0 +1,3 @@
+	as -g -o prog15a.o prog15a.s
+	ld -o prog15a prog15a.o
+	./prog15a

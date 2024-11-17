@@ -1,0 +1,2 @@
+gcc -g -o prog25a prog25a.s
+./prog25a

@@ -1,0 +1,3 @@
+	as -g -o prog18c.o prog18c.s
+	ld -o prog18c prog18c.o
+	./prog18c

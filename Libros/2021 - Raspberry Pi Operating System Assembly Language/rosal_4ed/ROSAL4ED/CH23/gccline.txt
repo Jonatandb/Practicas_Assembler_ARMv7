@@ -1,0 +1,12 @@
+For both programs ensure you are in the correct directory in Terminal.
+
+For GPIO 22 copy the first line  (line 8 below) and then past into Terminal and press
+the Enter or Return key to assemble the program. Then copy or type in the next line (9) to execute the program.
+
+For GPIO17 use line 11 as above, and then line 12 at above.
+
+gcc -march="armv8-a" -g -o GPIO22 prog23a_22.s
+./GPIO22
+
+gcc -march="armv8-a" -g -o GPIO17 prog23a_17.s
+./GPIO22

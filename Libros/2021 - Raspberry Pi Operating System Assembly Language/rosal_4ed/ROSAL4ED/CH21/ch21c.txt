@@ -1,0 +1,3 @@
+gcc -o testprint prog21b.s prog21c.s
+./testprint
+

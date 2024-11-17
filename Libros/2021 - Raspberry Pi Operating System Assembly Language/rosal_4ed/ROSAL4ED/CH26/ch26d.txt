@@ -1,0 +1,2 @@
+gcc -mfpu=neon-vfpv4 -g -o prog26d prog26d.s
+./prog26d

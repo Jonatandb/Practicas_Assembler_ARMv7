@@ -1,0 +1,3 @@
+	as -o prog6d.o prog6d.s
+	ld -o prog6d prog6d.o
+	./prog6d

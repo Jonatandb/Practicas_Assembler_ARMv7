@@ -1,0 +1,2 @@
+gcc -o prog22a prog22a.c
+./prog22a

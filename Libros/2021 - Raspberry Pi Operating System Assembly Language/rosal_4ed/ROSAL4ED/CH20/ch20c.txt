@@ -1,0 +1,1 @@
+gcc -g -o prog20c prog20c.s

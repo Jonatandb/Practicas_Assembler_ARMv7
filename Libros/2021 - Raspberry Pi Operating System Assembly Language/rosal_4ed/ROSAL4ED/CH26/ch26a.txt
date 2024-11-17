@@ -1,0 +1,3 @@
+as -mfpu=neon-vfpv4 -g -o prog26a.o prog26a.s
+ld -o prog26a prog26a.o
+./prog26a

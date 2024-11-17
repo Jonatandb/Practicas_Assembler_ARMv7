@@ -1,0 +1,2 @@
+gcc -S -o prog22d.s prog22d.c
+
