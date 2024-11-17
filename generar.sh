@@ -12,6 +12,7 @@ if [ -z "$1" ]; then
 else
   OBJ=${ORIGEN/.s/.o}
   BIN=${ORIGEN/.s/.exe}
-  echo "Compilando y enlazando $ORIGEN..."
-  as -g -o $OBJ $ORIGEN && gcc -o $BIN $OBJ
+  (echo -n "Compilando $ORIGEN -> $OBJ...   " && as -g -o $OBJ $ORIGEN && echo -e "\033[32m[OK]\033[0m") || { echo -e "\033[31mError al compilar\033[0m"; exit 1; }
+  (echo  -n "Enlazando  $OBJ -> $BIN... "   && gcc -o $BIN $OBJ && echo -e "\033[32m[OK]\033[0m")      || { echo -e "\033[31mError al enlazar\033[0m"; exit 1; }
+  echo -e "Ejecución: \033[32m./$BIN\033[0m"
 fi

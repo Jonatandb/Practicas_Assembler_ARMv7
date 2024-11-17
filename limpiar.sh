@@ -7,4 +7,4 @@
 # chmod +x limpiar.sh
 
 echo "Eliminando archivos .o y .exe..."
-rm -rf *.o *.exe # Borrado de todos los archivos .o y .exe
+rm -vrf *.o *.exe | sed 's/borrado/\x1b[32mEliminado\x1b[0m/g' # Borrado de todos los archivos .o y .exe
