@@ -1,26 +1,78 @@
 # Mis notas sobre Assembler
 
-### Compilación y enlazado:
-Generación de un ejecutable
-  - Compilación:  ```as -g -o archivo.o archivo.s```
-  - Enlazado:     ```gcc -o archivo_binario archivo.o``` (* *archivo_binario* será el ejecutable, ejecutable mediante:```./archivo_binario```)
+---
+### Compilación, enlazado y ejecución:
+Generación de un ejecutable:
+  - 1 - Compilación:  `as -g -o archivo.o archivo.s`
+    - `archivo.s` será el código fuente en Assembler.
+    - `archivo.o` será el archivo objeto que se generará (a utilizar para crear el binaro).
+  - 2 - Enlazado:     `gcc -o archivo_binario archivo.o`
+    - `archivo_binario` será el ejecutable.
+
+Ejecución de un archivo binario:
+  - 3- `./archivo_binaro`
 
 ---
+### Debuggeando con gdb:
+
+  `gdb archivo_binario`
+
+  - Comandos gdb:
+    - `start`: Para iniciar el debugging
+    - `s`: Para avanzar linea a linea (step). Presionando enter ejecuta una linea a la vez.
+    - `q`: Para salir, (o quit).
+    - `x`: Se usa para inspeccionar una dirección de memoria
+		  - Uso: 
+        - `x 0x0002102c`   			Muestra que valor hay en dicha dirección de memoria.
+        - `x /d 0x0002102c`   		Muestra el valor en formato decimal.
+        - `x /d $r1`						También se le puede pasar un registro.
+    - `r`: se usa para reiniciar el debugging, por lo que hay que ingresar start y s nuevamente.
+    - `b 8`: Para poner un breakpoint en línea 8.
+      - `run`: Para ejecutar hasta el breakpoint.
+    - `print /d $r0`: Muestra en formato decimal (gracias al /d, que se puede omitir) el contenido del registro r0.
+    - `info registers`: Muestra todos los registros
+    - `info registers r0 r1`: Muestra el valor del registro r0
+    - `info registers --format=d`: Muestra todos los registros en formato decimal
+    - `help`: Muestra ayuda sobre como usar muchísimos más comandos de gdb, ej: `help x`
+
+  - Si se cuelga o falla gdb, se puede salir con `Ctrl+d`
+
+    Más sobre gdb:
+				https://azeria-labs.com/debugging-with-gdb-introduction/
+---
 ### Registros
-Al usar los registros de manera eficiente, se puede minimizar la necesidad de acceder a la memoria principal, lo que a su vez mejora considerablemente la velocidad y eficiencia del programa. Son ubicaciones de memoria de alta velocidad utilizadas para almacenar temporalmente datos
-      y realizar operaciones en ellos.
-  Estos registros son áreas de memoria muy rápidas que se encuentran dentro del procesador.
 
-PC  Promgram Counter
-  El registro del contador de programa (PC) se utiliza para almacenar la dirección de la siguiente instrucción que se ejecutará.
 
-LR  Link Counter
-  El registro de enlace (LR) se utiliza para almacenar la dirección de retorno de una llamada a una función.
+Jerarquía de memoria
 
-El nivel más cercano al procesador es la memoria caché. (La más rápida)
-El siguiente nivel en la jerarquía de memoria es la memoria principal o RAM.
-Más allá de la memoria principal, se encuentra el almacenamiento secundario. (HD, SSD, SDCard)
+- Banco de registros (registros R0, R1, etc.)
+- Memoria caché
+- Memoria principal (RAM)
+- Almacenamiento secundario (HD, SSD, SDCard, etc)
 
+El banco de registros es un conjunto de memoria de alta velocidad que se utiliza para almacenar datos y resultados temporales durante la ejecución de instrucciones. Los registros R0, R1, etc. son parte de este banco de registros y se utilizan para almacenar datos y resultados de las operaciones aritméticas y lógicas.
+
+En términos de la jerarquía de memoria, el banco de registros se encuentra en el nivel más cercano al procesador, por encima de la memoria caché. La memoria caché se utiliza para almacenar datos y instrucciones que se utilizan con frecuencia, mientras que el banco de registros se utiliza para almacenar datos y resultados temporales durante la ejecución de instrucciones.
+
+Al usar los registros de manera eficiente, se puede minimizar la necesidad de acceder a la memoria principal, lo que a su vez mejora considerablemente la velocidad y eficiencia del programa. _Estos registros son áreas de memoria muy rápidas que se encuentran dentro del procesador._
+
+`PC`  Promgram Counter
+  - El registro del contador de programa (PC) se utiliza para almacenar la dirección de la siguiente instrucción que se ejecutará.
+  - El PC se incrementa automáticamente después de cada instrucción para apuntar a la siguiente instrucción.
+
+`LR`  Link Counter
+  - El registro de enlace (LR) se utiliza para almacenar la dirección de retorno de una llamada a una función.
+  - Cuando se llama a una función, el valor actual del PC se almacena en el registro LR.
+  - Cuando la función termina, el valor del LR se restaura en el PC para que la ejecución continúe desde la instrucción siguiente a la llamada a la función.
+
+`SP` (Stack Pointer)
+  - El registro SP se utiliza para almacenar la dirección de la pila de llamadas.
+  - La pila de llamadas es un área de memoria que se utiliza para almacenar los parámetros y variables locales de las funciones.
+  - El SP se utiliza para acceder a los elementos de la pila de llamadas.
+
+`R0-R12` (Registros de propósito general)
+  - Estos registros se utilizan para almacenar datos y resultados temporales durante la ejecución de instrucciones.
+  - Los registros R0-R12 son de 32 bits y se pueden utilizar para realizar operaciones aritméticas y lógicas.
 
 ---
 ### Estructuras de control
@@ -42,26 +94,55 @@ Más allá de la memoria principal, se encuentra el almacenamiento secundario. (
 
 ---
 ### Manipulación de datos
-  MOV:  Asignar un valor a un registro específico:
-          MOV r0, #1
-            r0 es el nombre del registro
-            #1 es el valor que se desea asignar, # se utiliza para indicar un valor inmediato
+  MOV:
+  - Asignar un valor a un registro específico:
+    - `MOV r0, #1` // Guarda el 1 en r1
+      - `r0` es el nombre del "registro destino".
+      - `#1` es el valor que se desea asignar (`#` se utiliza para indicar un valor "inmediato").
 
-  ADD:  Se utiliza para sumar dos valores, y el resultado se almacena en un registro específico (opcional, si no se especifica se incrementa el primer registro):
-          MOV r0, #1
-          ADD r1, #5
-          ADD r2, r0, r1   // Sumar los valores de r0 y r1 y guardar el resultado en r2
+  ADD:
+  - Se utiliza para sumar dos valores. El resultado se almacena en un registro específico (opcional: si no se especifica se incrementa el primer registro):
+    - Suma usando registros:
+      - `ADD r0, r1, r2`  // Deja la suma de los valores de `r1` y `r2`, en `r0`.
+      - `ADD r0, r1`  // Si se especifica solo dos operandos el resultado queda en el primer registro (registro destino).
 
+    - Suma usando valor inmediato:
+      - `ADD r0, #5` // Deja la suma en `r0`.
+
+  SUB:
+  - Se utiliza igual que ADD, solo hay que recordar que:
+    - Cuando se le pasan 2 registros:
+      - Restará al registro de la izquiera el valor de la derecha:
+        - `SUB r0, #1` Al valor en `r0` le restará 1, y dejará el resultado en `r0`.
+    - Cuando se le pasan 3 registros:
+      - Restará al segundo registro, el valor en el tercero:
+        - `SUB r0, r1, #1` Al valor en `r1` le restará 1, y dejará el resultado en `r0`.
+
+  MUL:
+  - Sirve para multiplicar, y se utiliza igual que ADD.
+
+  UDIV y SDIV:
+  - Sirven para dividir, y se utiliza igual que ADD.
+  - UDIV sirve para dividir operandos _sin_ signo.
+  - SDIV divide aunque ninguno, uno, o ambos de los operandos tenga signo.
+
+    Por qué _no_ usar SDIV siempre:
+    - Aunque SDIV puede manejar operandos con y sin signo, UDIV es una operación más simple que solo se preocupa por dividir números enteros sin signo, lo que la hace más rápida y eficiente.
 
 ---
 ### Carga y almacenamiento de datos desde y hacia la memoria
 En ARM, los datos deben trasladarse de la memoria a los registros antes de ser operados.
   - Transferir los datos entre la memoria y los registros:
-      - STR   (store register, store word)  Guarda en memoria un valor tomado de un registro
       - LDR   (load register, load word)   Guarda en un registro un valor tomado de la memoria
           - Ejemplos:
-            - ```ldr r0, =5```     // Cargar el valor 5 en el registro r0
-            - ```ldr r2, [r1]``` // Los corchetes ([ ]) significan: el valor que se encuentra en el registro entre estos corchetes es una dirección de memoria desde la que queremos cargar algo.
+            - `ldr r1, =mensaje1` Carga en `r1` la dirección de memoria de `mensaje1`.
+            - `ldr r2, [r1]` Con el uso de los corchetes [ ], carga en `r2` el valor almacenado en la dirección de memoria almacenada en `r1`.
+            - También se puede ejecutar: `ldr r0, =5` Carga el valor 5 en el registro `r0` (Aunque en realidad se ejecutará `mov r0, #5`)
+
+      - STR   (store register, store word)  Guarda en memoria un valor tomado de un registro
+        - Ejemplo:
+          - `ldr r3, =sum` Almacena en `r3` la dirección de memoria de `sum`.
+          - `str r0, [r3]` Guarda en la dirección de memoria apuntada por `r3` el valor guardado en el registro `r0`.
 
 
 ---
@@ -114,3 +195,4 @@ Devolver valores desde una subrutina:
 - https://kevinboone.me/pi-asm-toc.html
   - https://github.com/kevinboone/pi-asm
 - https://azeria-labs.com/arm-data-types-and-registers-part-2/
+- Curso ARM desde 0: https://www.youtube.com/playlist?list=PLqsewl9xsOjZoZ_0HeQxJ3w0vvTuQaa72
