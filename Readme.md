@@ -22,18 +22,18 @@ Ejecución de un archivo binario:
     - `s`: Para avanzar linea a linea (step). Presionando enter ejecuta una linea a la vez.
     - `q`: Para salir, (o quit).
     - `x`: Se usa para inspeccionar una dirección de memoria
-		  - Uso: 
+      - Uso:
         - `x 0x0002102c`   			Muestra que valor hay en dicha dirección de memoria.
         - `x /d 0x0002102c`   		Muestra el valor en formato decimal.
         - `x /d $r1`						También se le puede pasar un registro.
     - `r`: se usa para reiniciar el debugging, por lo que hay que ingresar start y s nuevamente.
     - `b 8`: Para poner un breakpoint en línea 8.
-      - `run`: Para ejecutar hasta el breakpoint.
-    - `print /d $r0`: Muestra en formato decimal (gracias al /d, que se puede omitir) el contenido del registro r0.
+    - `run`: Para ejecutar todo el programa (se frena si se establecieró algún breakpoint).
+    - `print /d $r0`: Muestra en formato decimal (gracias al /d, que se puede omitir) el contenido del registro `r0`.
     - `info registers`: Muestra todos los registros
-    - `info registers r0 r1`: Muestra el valor del registro r0
-    - `info registers --format=d`: Muestra todos los registros en formato decimal
-    - `help`: Muestra ayuda sobre como usar muchísimos más comandos de gdb, ej: `help x`
+    - `info registers r0 r1`: Muestra el valor de los registros `r0` y `r1`.
+    - `help`: Muestra ayuda sobre como usar muchísimos más comandos de gdb, ej:
+      - `help x`
 
   - Si se cuelga o falla gdb, se puede salir con `Ctrl+d`
 
@@ -85,11 +85,8 @@ Al usar los registros de manera eficiente, se puede minimizar la necesidad de ac
     comparación CMP, para crear bucles en nuestros programas.
 
   Otras estructuras de control:
-    B instrucción de salto incondicional, permite saltar a cualquier parte del código
-        sin necesidad de cumplir una condición.
-
-    BL y BLX: instrucciones de llamada a subrutina, permiten llamar a una subrutina
-                y luego retornar al punto de partida.
+  - B instrucción de salto incondicional, permite saltar a cualquier parte del código sin necesidad de cumplir una condición.
+  - BL y BLX: instrucciones de llamada a subrutina, permiten llamar a una subrutina y luego retornar al punto de partida.
 
 
 ---
@@ -190,7 +187,7 @@ Devolver valores desde una subrutina:
     La instrucción ```bx lr``` es una forma de saltar a la dirección de retorno que se encuentra en el registro ```lr```. El registro ```lr``` se utiliza para almacenar la dirección de retorno cuando se llama a una subrutina.
 
 ---
-### Links investigados
+### Sitios investigados
 - https://elblogdelprogramador.com/posts/aprende-programacion-en-lenguaje-assembly-con-arm-practica-y-ejemplos/#gsc.tab=0
 - https://kevinboone.me/pi-asm-toc.html
   - https://github.com/kevinboone/pi-asm
