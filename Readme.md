@@ -131,6 +131,7 @@ En ARM, los datos deben trasladarse de la memoria a los registros antes de ser o
 Instrucciones de salto
   - `B` (Branch): salta incondicionalmente a una etiqueta en el código.
   - `BL` (Branch with Link): salta a una etiqueta en el código y guarda la dirección de retorno en el registro `LR`. Permite saltar a una subrutina y luego retornar al punto de partida gracias a que la `"l"` viene de "Link", por lo que en el registro `LR` se guardará la dirección de la próxima instrucción que se deberá ejecutar al volver de la subrutina llamada.
+  - `BX` (Branch and Exchange): salta a una dirección especificada y cambia el conjunto de instrucciones (entre ARM y Thumb) si es necesario, según el valor del bit 0 del registro de destino.
 
 Instrucciones de condición
   - `BNE` (Branch if Not Equal): salta a una etiqueta si los registros `Rn` y `Rm` no son iguales.
