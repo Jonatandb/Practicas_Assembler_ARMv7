@@ -4,20 +4,20 @@
 
 	- [x] Crear distintos tipos de variables
 
-	-	[x] Aprender a crear comparaciones
+	- [x] Aprender a crear comparaciones
 
-	-	[x] Aprender a crear loops
+	- [x] Aprender a crear loops
 
-	-	[ ] Aprender a colorear texto letra a letra
+	- [ ] Aprender a colorear texto letra a letra
 
-	-	[ ] Aprender a leer datos de archivo .txt
+	- [ ] Aprender a leer datos de archivo .txt
 
-	-	[ ] Aprender a crear funciones:
+	- [ ] Aprender a crear funciones:
 
-			- Para mostrar mensaje
-			- Para mostrar mensaje con letras en deferentes colores
-			-	Para pedir ingreso al usuario
-			- ...
+	    - Para mostrar mensaje
+	    - Para mostrar mensaje con letras en deferentes colores
+	      - Para pedir ingreso al usuario
+	    - ...
 
 */
 
@@ -235,39 +235,6 @@
 */
 
 
-/* // Impresión de texto
-	.global main
-
-	.data
-		mensaje1: .asciz "Este es un mensaje\n" @ 19 carcteres en total
-		mensaje2: .asciz "Este es otro mensaje\n" @ 21 carcteres en total
-
-	.text
-	main:
-		ldr r1, =mensaje1  	@ r1 tendrá la dirección de mensaje1
-		mov r2, #19					@ cantidad de caracteres de mensaje1
-		bl mostrar_texto
-
-		ldr r1, =mensaje2  	@ r1 tendrá la dirección de mensaje2
-		mov r2, #21					@ cantidad de caracteres de mensaje2
-		bl mostrar_texto
-
-		b fin
-
-	mostrar_texto:
-		push {lr}
-		mov r0, #1					@ Descriptor de archivo (stdout)
-		mov r7, #4					@ Código de sistema (syscall) para write
-		svc 0								@ Llamada al sistema
-		pop {lr}
-		bx lr
-
-	fin:
-		mov r7, #1
-		swi 0
-*/
-
-
 /*  // Bucle tipo while que suma los números del 1 al 10 y guarda el resultado en el registro r0
 	.global main
 	fin:
@@ -287,27 +254,78 @@
 */
 
 
-/*  // Bucle tipo for que suma todos los números de un "array" y guarda el resultado en el registro r0 */
-.data
-cant_nums:	.word 8
-nums:				.word 2, 4, 6, 8, -2, -4, -6, -7
-suma:				.word 0
+/*  // Bucle tipo for que suma todos los números de un "array" y guarda el resultado en el registro r0
+	.data
+	cant_nums:	.word 8
+	nums:				.word 2, 4, 6, 8, -2, -4, -6, -7
+	suma:				.word 0
 
-.text
-.global main
-main:
-	ldr r0, =cant_nums			@ cargo en r0 la dirección de cant_nums
-	ldr r1, [r0]						@ cargo en r1 el valor en la dirección dada por r0: 8
-	ldr r2, =nums						@ cargo en r2 la dirección de donde empiezan los nums
-	mov r3, #0							@ inicializo r3 en 0, porque ahí haré la sumatoria
-	loop:	cmp r1, #0				@ comparo el valor actual en cant_nums contra cero
-				beq	salir					@ si cant_nums llegó a 0, termino el programa
-				ldr r4, [r2], #4	@ cargo en r4 el valor dado por la dirección en r2 desplazada 4 bytes (siguiente num)
-				add r3, r3, r4		@ cargo en r3 la suma parcial del número actual con los ya sumados
-				sub r1, #1				@ le resto a r1, 1, ya que ya pocresé el número actual
-				b loop						@ vuelvo a procesar para sumar siguiente número
-	salir:
-				ldr r0, =suma			@ cargo en r0 la dirección de suma
-				str r3, [r0]			@ guardo en la dirección de suma el total de los números sumados
-				bx lr							@ finalizo el programa
+	.text
+	.global main
+	main:
+		ldr r0, =cant_nums			@ cargo en r0 la dirección de cant_nums
+		ldr r1, [r0]						@ cargo en r1 el valor en la dirección dada por r0: 8
+		ldr r2, =nums						@ cargo en r2 la dirección de donde empiezan los nums
+		mov r3, #0							@ inicializo r3 en 0, porque ahí haré la sumatoria
+		loop:	cmp r1, #0				@ comparo el valor actual en cant_nums contra cero
+					beq	salir					@ si cant_nums llegó a 0, termino el programa
+					ldr r4, [r2], #4	@ cargo en r4 el valor dado por la dirección en r2 desplazada 4 bytes (siguiente num)
+					add r3, r3, r4		@ cargo en r3 la suma parcial del número actual con los ya sumados
+					sub r1, #1				@ le resto a r1, 1, ya que ya pocresé el número actual
+					b loop						@ vuelvo a procesar para sumar siguiente número
+		salir:
+					ldr r0, =suma			@ cargo en r0 la dirección de suma
+					str r3, [r0]			@ guardo en la dirección de suma el total de los números sumados
+					bx lr							@ finalizo el programa
+*/
 
+/* // Uso de subrutinas
+	.global main
+	main:
+			mov r1, #1
+			mov r2, #2
+			bl nivel1    @ lr va a guardar la dirección de
+			mov r5, #5   @ <- esta instrucción
+			b fin
+
+	fin:mov r7, #1
+			swi 0
+
+	nivel1:
+			push {lr}    @ guardo en la pila la dir. de mov r5, #5
+			mov r3, #3
+			bl nivel2    @ lr va a guardar la dirección de
+			pop {lr}     @ <- esta instrucción
+			bx lr        @ como pop restauró lr, salta a mov r5, #5
+
+	nivel2:
+			mov r4, #4
+			bx lr        @ salta al pop {lr}
+*/
+
+
+
+/* // Impresión de texto */
+	.global main
+
+	.data
+		mensaje1: .asciz "Este es un mensaje\n"   @ 19 carcteres en total
+
+	.text
+	main:
+		ldr r1, =mensaje1  	@ r1 tendrá la dirección de mensaje1
+		mov r2, #19					@ r2, cantidad de caracteres de mensaje1
+		bl mostrar_texto
+		b fin
+
+	mostrar_texto:
+		push {lr}
+		mov r0, #1					@ Descriptor de archivo (stdout)
+		mov r7, #4					@ Código de sistema (syscall) para write
+		svc 0								@ Llamada al sistema
+		pop {lr}
+		bx lr
+
+	fin:
+		mov r7, #1
+		swi 0
