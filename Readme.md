@@ -76,38 +76,35 @@ Al usar los registros de manera eficiente, se puede minimizar la necesidad de ac
 
 ---
 ### Estructuras de control
-  La más común, es la condicional (If):
-    CMP, para comparar valores
-          luego, dependiendo del resultado, se salta a una parte del código utilizando
-          las instrucciones BEQ, BNE, BGT
-
-  El bucle, en assembler se usan B, BL, BLT entre otras, junto con las instrucciones de
-    comparación CMP, para crear bucles en nuestros programas.
+  La más común, es la condicional `CMP`:
+  - `CMP`, para comparar valores (resta al operando 1 el operando 2 y actualiza los flags), luego dependiendo del resultado, se salta a una parte del código utilizando las instrucciones como `BEQ`, `BNE`, `BGT`, etc.
+  - También se pueden utilizar `CMN` (suma los operandos y actualiza los flags) o `TEQ` (hace xor con los operandos y actualiza los flags).
 
   Otras estructuras de control:
-  - B instrucción de salto incondicional, permite saltar a cualquier parte del código sin necesidad de cumplir una condición.
-  - BL y BLX: instrucciones de llamada a subrutina, permiten llamar a una subrutina y luego retornar al punto de partida.
+  - `B` instrucción de salto incondicional, permite saltar a cualquier parte del código sin necesidad de cumplir una condición.
+  - `BL` y `BLX`: instrucciones de llamada a subrutina, permiten llamar a una subrutina y luego retornar al punto de partida.
 
+  El bucle: en assembler se usan `B`, `BL`, `BLT` entre otras, junto con las instrucciones de comparación como `CMP`, para crear bucles en nuestros programas.
 
 ---
 ### Manipulación de datos
-  MOV:
+  `MOV`:
   - Asignar un valor a un registro específico:
-    - `MOV r0, #1` // Guarda el 1 en r1
+    - `mov r0, #1` // Guarda el 1 en r1
       - `r0` es el nombre del "registro destino".
       - `#1` es el valor que se desea asignar (`#` se utiliza para indicar un valor "inmediato").
 
-  ADD:
+  `ADD`:
   - Se utiliza para sumar dos valores. El resultado se almacena en un registro específico (opcional: si no se especifica se incrementa el primer registro):
     - Suma usando registros:
-      - `ADD r0, r1, r2`  // Deja la suma de los valores de `r1` y `r2`, en `r0`.
-      - `ADD r0, r1`  // Si se especifica solo dos operandos el resultado queda en el primer registro (registro destino).
+      - `add r0, r1, r2`  // Deja la suma de los valores de `r1` y `r2`, en `r0`.
+      - `add r0, r1`  // Si se especifica solo dos operandos el resultado queda en el primer registro (registro destino).
 
     - Suma usando valor inmediato:
-      - `ADD r0, #5` // Deja la suma en `r0`.
+      - `add r0, #5` // Deja la suma en `r0`.
 
-  SUB:
-  - Se utiliza igual que ADD, solo hay que recordar que:
+  `SUB`:
+  - Se utiliza igual que `ADD`, solo hay que recordar que:
     - Cuando se le pasan 2 registros:
       - Restará al registro de la izquiera el valor de la derecha:
         - `SUB r0, #1` Al valor en `r0` le restará 1, y dejará el resultado en `r0`.
@@ -115,28 +112,28 @@ Al usar los registros de manera eficiente, se puede minimizar la necesidad de ac
       - Restará al segundo registro, el valor en el tercero:
         - `SUB r0, r1, #1` Al valor en `r1` le restará 1, y dejará el resultado en `r0`.
 
-  MUL:
-  - Sirve para multiplicar, y se utiliza igual que ADD.
+  `MUL`:
+  - Sirve para multiplicar, y se utiliza igual que `ADD`.
 
-  UDIV y SDIV:
-  - Sirven para dividir, y se utiliza igual que ADD.
-  - UDIV sirve para dividir operandos _sin_ signo.
-  - SDIV divide aunque ninguno, uno, o ambos de los operandos tenga signo.
+  `UDIV` y `SDIV`:
+  - Sirven para dividir, y se utiliza igual que `ADD`.
+  - `UDIV` sirve para dividir operandos _sin_ signo.
+  - `SDIV` divide aunque ninguno, uno, o ambos de los operandos tenga signo.
 
-    Por qué _no_ usar SDIV siempre:
-    - Aunque SDIV puede manejar operandos con y sin signo, UDIV es una operación más simple que solo se preocupa por dividir números enteros sin signo, lo que la hace más rápida y eficiente.
+    Por qué _no_ usar `SDIV` siempre:
+    - Aunque `SDIV` puede manejar operandos con y sin signo, `UDIV` es una operación más simple que solo se preocupa por dividir números enteros sin signo, lo que la hace más rápida y eficiente.
 
 ---
 ### Carga y almacenamiento de datos desde y hacia la memoria
 En ARM, los datos deben trasladarse de la memoria a los registros antes de ser operados.
   - Transferir los datos entre la memoria y los registros:
-      - LDR   (load register, load word)   Guarda en un registro un valor tomado de la memoria
+      - `LDR` (load register, load word)  Guarda en un registro un valor tomado de la memoria.
           - Ejemplos:
             - `ldr r1, =mensaje1` Carga en `r1` la dirección de memoria de `mensaje1`.
             - `ldr r2, [r1]` Con el uso de los corchetes [ ], carga en `r2` el valor almacenado en la dirección de memoria almacenada en `r1`.
             - También se puede ejecutar: `ldr r0, =5` Carga el valor 5 en el registro `r0` (Aunque en realidad se ejecutará `mov r0, #5`)
 
-      - STR   (store register, store word)  Guarda en memoria un valor tomado de un registro
+      - `STR` (store register, store word)  Guarda en memoria un valor tomado de un registro.
         - Ejemplo:
           - `ldr r3, =sum` Almacena en `r3` la dirección de memoria de `sum`.
           - `str r0, [r3]` Guarda en la dirección de memoria apuntada por `r3` el valor guardado en el registro `r0`.
@@ -185,6 +182,9 @@ Devolver valores desde una subrutina:
       bx lr         // retorna a la rutina principal
     ```
     La instrucción ```bx lr``` es una forma de saltar a la dirección de retorno que se encuentra en el registro ```lr```. El registro ```lr``` se utiliza para almacenar la dirección de retorno cuando se llama a una subrutina.
+
+Cuando se llaman subrutinas, se debe guardar en la pila el valor de `LR` para que la ejecución pueda continuar luego de que las mismas finalizan.
+- Siempre que una rutina vaya a llamar a otra, se debe guardar en la pila el valor de `lr` con `push {lr}`, y antes de finalizar debe restaurar el registro `lr` con `pop {lr}`. Con esto, puede finalmente ejecutar `bx lr` y la ejecución del programa continuará justo en la línea siguiente a la de la llamada a la rutina.
 
 ---
 ### Sitios investigados
