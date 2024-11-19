@@ -8,16 +8,14 @@
 
 	- [x] Aprender a crear loops
 
-	- [ ] Aprender a colorear texto letra a letra
+	- [x] Aprender a crear funciones
+
+	- [ ] Aprender a colorear texto (línea y letra a letra)
 
 	- [ ] Aprender a leer datos de archivo .txt
 
-	- [ ] Aprender a crear funciones:
+	- [ ] Arepnder a pedir un ingreso al usuario
 
-	    - Para mostrar mensaje
-	    - Para mostrar mensaje con letras en deferentes colores
-	      - Para pedir ingreso al usuario
-	    - ...
 
 */
 
@@ -279,6 +277,7 @@
 					bx lr							@ finalizo el programa
 */
 
+
 /* // Uso de subrutinas
 	.global main
 	main:
@@ -304,8 +303,33 @@
 */
 
 
+/* // Cuadrado de un número */
+.data
+	num: .word 2
+	res: .word 0
 
-/* // Impresión de texto */
+.text
+.global main
+main:
+	ldr r0, =num
+	ldr r1, [r0]    @ r1 => 2
+
+	bl cuadrado
+
+	ldr r0, =res
+	str r2, [r0]    @ r0 => 4
+
+	b exit
+
+cuadrado:
+	mul r2, r1, r1  @ r2 => 4
+	bx lr
+
+exit:
+	.end
+
+
+/* // Impresión de texto
 	.global main
 
 	.data
@@ -329,3 +353,4 @@
 	fin:
 		mov r7, #1
 		swi 0
+*/
