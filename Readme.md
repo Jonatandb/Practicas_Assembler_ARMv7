@@ -75,18 +75,6 @@ Al usar los registros de manera eficiente, se puede minimizar la necesidad de ac
   - Los registros R0-R12 son de 32 bits y se pueden utilizar para realizar operaciones aritméticas y lógicas.
 
 ---
-### Estructuras de control
-  La más común, es la condicional `CMP`:
-  - `CMP`, para comparar valores (resta al operando 1 el operando 2 y actualiza los flags), luego dependiendo del resultado, se salta a una parte del código utilizando las instrucciones como `BEQ`, `BNE`, `BGT`, etc.
-  - También se pueden utilizar `CMN` (suma los operandos y actualiza los flags) o `TEQ` (hace xor con los operandos y actualiza los flags).
-
-  Otras estructuras de control:
-  - `B` instrucción de salto incondicional, permite saltar a cualquier parte del código sin necesidad de cumplir una condición.
-  - `BL` y `BLX`: instrucciones de llamada a subrutina, permiten llamar a una subrutina y luego retornar al punto de partida.
-
-  El bucle: en assembler se usan `B`, `BL`, `BLT` entre otras, junto con las instrucciones de comparación como `CMP`, para crear bucles en nuestros programas.
-
----
 ### Manipulación de datos
   `MOV`:
   - Asignar un valor a un registro específico:
@@ -137,6 +125,31 @@ En ARM, los datos deben trasladarse de la memoria a los registros antes de ser o
         - Ejemplo:
           - `ldr r3, =sum` Almacena en `r3` la dirección de memoria de `sum`.
           - `str r0, [r3]` Guarda en la dirección de memoria apuntada por `r3` el valor guardado en el registro `r0`.
+
+---
+### Estructuras de control
+Instrucciones de salto
+  - `B` (Branch): salta incondicionalmente a una etiqueta en el código.
+  - `BL` (Branch with Link): salta a una etiqueta en el código y guarda la dirección de retorno en el registro `LR`. Permite saltar a una subrutina y luego retornar al punto de partida gracias a que la `"l"` viene de "Link", por lo que en el registro `LR` se guardará la dirección de la próxima instrucción que se deberá ejecutar al volver de la subrutina llamada.
+
+Instrucciones de condición
+  - `BNE` (Branch if Not Equal): salta a una etiqueta si los registros `Rn` y `Rm` no son iguales.
+  - `BEQ` (Branch if Equal): salta a una etiqueta si los registros `Rn` y `Rm` son iguales.
+  - `BGE` (Branch if Greater or Equal): salta a una etiqueta si el registro `Rn` es mayor o igual que el registro `Rm`.
+  - `BLT` (Branch if Less Than): salta a una etiqueta si el registro `Rn` es menor que el registro `Rm`.
+  - `BLE` (Branch if Less or Equal): salta a una etiqueta si el registro `Rn` es menor o igual que el registro `Rm`.
+
+Instrucciones de selección
+  - `CMP` (Compare): compara dos registros y establece las banderas de condición.
+  - `CMN` (Compare Negative): compara un registro con el valor cero y establece las banderas de condición.
+  - `TST` (Test): realiza una operación lógica AND entre dos registros y establece las banderas de condición.
+  - `TEQ` (Test Equal): realiza una operación lógica XOR entre dos registros y establece las banderas de condición.
+
+Instrucciones de interrupción
+  - `SWI` (Software Interrupt): genera una interrupción de software.
+
+
+Bucles: en assembler se crean bucles usando las instrucciones de comparación como `CMP` entre otras, junto con `B`, `BL`, `BLT`, etc, para crear bucles en nuestros programas.
 
 
 ---
