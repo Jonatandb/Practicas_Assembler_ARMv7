@@ -18,8 +18,12 @@ Ejecución de un archivo binario:
   `gdb archivo_binario`
 
   - Comandos gdb:
+    - `help`: Muestra ayuda sobre como usar muchísimos más comandos de gdb, ej:
+      - `help x`
     - `start`: Para iniciar el debugging
-    - `s`: Para avanzar linea a linea (step). Presionando enter ejecuta una linea a la vez.
+    - `stepi`: Para avanzar linea a linea (step). Presionando enter ejecuta una linea a la vez.
+      - Versión abreviada:
+        - `s`
     - `q`: Para salir, (o quit).
     - `x`: Se usa para inspeccionar una dirección de memoria
       - Uso:
@@ -29,11 +33,20 @@ Ejecución de un archivo binario:
     - `r`: se usa para reiniciar el debugging, por lo que hay que ingresar start y s nuevamente.
     - `b 8`: Para poner un breakpoint en línea 8.
     - `run`: Para ejecutar todo el programa (se frena si se establecieró algún breakpoint).
-    - `print /d $r0`: Muestra en formato decimal (gracias al /d, que se puede omitir) el contenido del registro `r0`.
+    - `print /d $r0`: Muestra en formato decimal (gracias al /d, que se puede omitir) el contenido del registro `r0` (a los registros se les debe anteponer el `$`).
+      - Versión abreviada:
+        - `p /d $r0`: Muestra el contenido del registro.
+      - `p &myvar1`: Muestra la dirección de memoria de la variable.
+      - `p myvar1`: Muestra el contenido de la variable.
+    - `dissasemble`: Muestra el contenido de la rutina actual y marca la instrucción a punto de ejecutar.
+      - Versión abreviada:
+        - `disas`
+    - `continue`: Continúa con la ejecución del programa.
+      - Versión abreviada:
+        - `c`
     - `info registers`: Muestra todos los registros
     - `info registers r0 r1`: Muestra el valor de los registros `r0` y `r1`.
-    - `help`: Muestra ayuda sobre como usar muchísimos más comandos de gdb, ej:
-      - `help x`
+    - `$r0 = 2`: Le asigna el `2` al registro `r0`
 
   - Si se cuelga o falla gdb, se puede salir con `Ctrl+d`
 
@@ -207,3 +220,4 @@ Cuando se llaman subrutinas, se debe guardar en la pila el valor de `LR` para qu
   - https://github.com/kevinboone/pi-asm
 - https://azeria-labs.com/arm-data-types-and-registers-part-2/
 - Curso ARM desde 0: https://www.youtube.com/playlist?list=PLqsewl9xsOjZoZ_0HeQxJ3w0vvTuQaa72
+- https://thinkingeek.com/2013/01/12/arm-assembler-raspberry-pi-chapter-4/
