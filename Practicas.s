@@ -291,25 +291,30 @@
 			swi 0
 
 	nivel1:
-			push {lr}    @ guardo en la pila la dir. de mov r5, #5
+			push {lr}    @ guardo en la pila la dir. de "mov r5, #5" de main
 			mov r3, #3
 			bl nivel2    @ lr va a guardar la dirección de
 			pop {lr}     @ <- esta instrucción
-			bx lr        @ como pop restauró lr, salta a mov r5, #5
+			bx lr        @ como pop restauró lr, salta a "mov r5, #5" de main
 
 	nivel2:
 			mov r4, #4
-			bx lr        @ salta al pop {lr}
+			bx lr        @ salta al pop {lr} de nivel1
 */
 
 
-/* // Cuadrado de un número */
+/* // Cuadrado de un número
+.global main
+
 .data
 	num: .word 2
 	res: .word 0
 
 .text
-.global main
+cuadrado:
+	mul r2, r1, r1  @ r2 => 4
+	bx lr
+
 main:
 	ldr r0, =num
 	ldr r1, [r0]    @ r1 => 2
@@ -321,36 +326,38 @@ main:
 
 	b exit
 
-cuadrado:
-	mul r2, r1, r1  @ r2 => 4
-	bx lr
-
 exit:
-	.end
+	mov r0, #0
+	mov r7, #1
+	swi 0
+*/
 
 
-/* // Impresión de texto
+/* // Impresión de texto */
 	.global main
 
 	.data
 		mensaje1: .asciz "Este es un mensaje\n"   @ 19 carcteres en total
 
 	.text
-	main:
-		ldr r1, =mensaje1  	@ r1 tendrá la dirección de mensaje1
-		mov r2, #19					@ r2, cantidad de caracteres de mensaje1
-		bl mostrar_texto
-		b fin
 
+  // Escribe en pantalla lo que esté en la dirección seteada con ldr a r1
+  // con la longitud de caracteres especificada en r2
+  // Ej:
+  //  ldr r1, =msg_importante
+  //  mov r2, #6
 	mostrar_texto:
-		push {lr}
 		mov r0, #1					@ Descriptor de archivo (stdout)
 		mov r7, #4					@ Código de sistema (syscall) para write
 		svc 0								@ Llamada al sistema
-		pop {lr}
 		bx lr
 
+	main:
+		ldr r1, =mensaje1  	@ r1 tendrá la dirección (por eso el "=") de mensaje1
+		mov r2, #19					@ r2, cantidad de caracteres de mensaje1
+		bl mostrar_texto
+
 	fin:
+		mov r0, #0
 		mov r7, #1
 		swi 0
-*/
