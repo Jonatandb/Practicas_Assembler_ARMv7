@@ -337,15 +337,19 @@ exit:
 	.global main
 
 	.data
-		mensaje1: .asciz "Este es un mensaje\n"   @ 19 carcteres en total
+		mensaje1: .asciz "Este es un mensaje\n"   @ Mensaje a mostrar
+		largo_mensaje1 =.-mensaje1                @ "=.-" se usa para obtener el "largo" de mensaje1
+                                              @ El operador "-"" devuelve la diferencia entre la posición
+                                              @ actual del código y la posición de la etiqueta mensaje1
+                                              @ IMPORTANTE: siempre usar inmediatamente después de la
+                                              @ variable de la que se desea saber su largo.
 
 	.text
 
   // Escribe en pantalla lo que esté en la dirección seteada con ldr a r1
-  // con la longitud de caracteres especificada en r2
-  // Ej:
-  //  ldr r1, =msg_importante
-  //  mov r2, #6
+  // con la longitud de caracteres de la cadena, especificada en r2, Ej:
+  //      ldr r1, =msg_importante
+  //      mov r2, #16
 	mostrar_texto:
 		mov r0, #1					@ Descriptor de archivo (stdout)
 		mov r7, #4					@ Código de sistema (syscall) para write
@@ -353,8 +357,8 @@ exit:
 		bx lr
 
 	main:
-		ldr r1, =mensaje1  	@ r1 tendrá la dirección (por eso el "=") de mensaje1
-		mov r2, #19					@ r2, cantidad de caracteres de mensaje1
+		ldr r1, =mensaje1  	    @ r1 tendrá la dirección de mensaje1 (por eso el "=")
+		ldr r2, =largo_mensaje1 @ r2 tendrá la cantidad de caracteres de mensaje1
 		bl mostrar_texto
 
 	fin:
