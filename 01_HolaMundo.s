@@ -6,7 +6,7 @@
 .text             // Comienza el código ejecutable (rutinas)
 main:
   ldr r1, =cadena // En r1 va la dir. de la cadena a mostrar
-  mov r2, #12     // En r2 la longitud de la cadena
+  mov r2, #12     // En r2 va la longitud de la cadena
   mov r0, #1      // Descriptor de archivo (stdout)
   mov r7, #4      // syscall número 4: Escribir (enviar datos a la consola)
   swi 0           // swi: Software Interruption
