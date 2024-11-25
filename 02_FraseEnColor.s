@@ -22,6 +22,13 @@
     swi 0
     bx lr
 
+  // Escribe en pantalla el texto especificado con ldr en r1
+  // con la longitud especificada en r2
+  // usando el color especificado en r3, ej:
+  //     ldr r1, =texto1        // Cargar el texto a mostrar
+  //     ldr r2, =largo_texto1  // Longitud del texto
+  //     ldr r3, =color_rojo    // Color
+  //     bl escribir_en_color
   escribir_en_color:
     push {r1, r2, lr}      // Guarda lo que hay que imprimir, su longitud y lr, en la pila
     mov r1, r3             // Cargar la secuencia para el color
@@ -40,13 +47,13 @@
 
   main:
     // Imprimir texto en rojo
-    ldr r1, =texto1        // Cargar el texto a mostrar en rojo
+    ldr r1, =texto1        // Cargar el texto a mostrar
     ldr r2, =largo_texto1  // Longitud del texto
     ldr r3, =color_rojo    // Color
     bl escribir_en_color
 
     // Imprimir texto en verde
-    ldr r1, =texto2        // Cargar el texto a mostrar en verde
+    ldr r1, =texto2        // Cargar el texto a mostrar
     ldr r2, =largo_texto2  // Longitud del texto
     ldr r3, =color_verde   // Color
     bl escribir_en_color
