@@ -27,6 +27,7 @@
   // usando el color especificado en r3, ej:
   //     ldr r1, =texto1        // Cargar el texto a mostrar
   //     ldr r2, =largo_texto1  // Longitud del texto
+  //         alternativa:  mov r2, #1
   //     ldr r3, =color_rojo    // Color
   //     bl escribir_en_color
   escribir_en_color:
