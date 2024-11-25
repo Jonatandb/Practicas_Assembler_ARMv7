@@ -1,19 +1,20 @@
 .global main
 
 .data
-  rojo:   .asciz "\033[31m"    // Secuencia para color rojo
-  verde:  .asciz "\033[32m"    // Secuencia para color verde
-  magenta:   .asciz "\033[35m"    // Secuencia para color magenta
+  rojo:     .asciz "\033[31m"  // Secuencia para color rojo
+  verde:    .asciz "\033[32m"  // Secuencia para color verde
+  magenta:  .asciz "\033[35m"  // Secuencia para color magenta
   amarillo: .asciz "\033[33m"  // Secuencia para color amarillo
-  blanco:  .asciz "\033[0m"     // Secuencia para restablecer color
-  texto:  .asciz "Hola\n"      // Texto que queremos imprimir
+  blanco:   .asciz "\033[0m"   // Secuencia para restablecer color
+  texto:    .asciz "HoLa!\n"   // Texto a imprimir
 
 .text
 
   // Escribe en pantalla lo que esté en la dirección seteada con ldr a r1
   // con la longitud de caracteres especificada en r2
+  // usando el color predeterminado (blanco)
   // Ej:
-  //  ldr r1, =texto_rojo
+  //  ldr r1, =mensaje
   //  mov r2, #6
   escribir:
     mov r0, #1             // Descriptor de archivo (stdout)
@@ -57,17 +58,23 @@ main:
   ldr r3, =verde
   bl escribir_en_color
 
-  // Imprimir la "l" en magenta
-  ldr r1, =texto + 2   // Cargar el texto (tercer carácter "l")
+  // Imprimir la "L" en magenta
+  ldr r1, =texto + 2   // Cargar el texto (tercer carácter "L")
   mov r2, #1           // Longitud (1 byte)
   ldr r3, =magenta
   bl escribir_en_color
 
   // Imprimir la "a" en amarillo
   ldr r1, =texto + 3   // Cargar el texto (cuarto carácter "a")
-  mov r2, #2           // Longitud de la "a" (1 byte) + longitud del "\n" (1 byte)
+  mov r2, #1           // Longitud de la "a" (1 byte)
   ldr r3, =amarillo
   bl escribir_en_color
+
+  // Imprimir "!" (y el salto de línea) en amarillo
+  ldr r1, =texto + 4   // Cargar el texto (quinto carácter "!")
+  mov r2, #2           // Longitud de "!" (1 byte) + longitud del "\n" (1 byte)
+  //ldr r3, =blanco    // Por defecto "escribir", utiliza el color blanco
+  bl escribir
 
   // Fin del programa
   mov r0, #0           // Código de salida
