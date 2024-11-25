@@ -5,7 +5,9 @@
   color_verde: .asciz "\033[32m"
   color_blanco: .asciz "\033[0m"    // Secuencia para restablecer color
   textorojo:  .asciz "Este texto aparece en color rojo\n"    // Almacena el texto (terminado en null)
+  largo_textorojo =.- textorojo
   textoverde: .asciz "Este texto aparece en color verde\n"   // Almacena el texto (terminado en null)
+  largo_textoverde =.- textoverde
 
 .text
 
@@ -53,13 +55,13 @@
 
   main:
     // Imprimir texto en rojo
-    ldr r1, =textorojo     // Cargar el texto a mostrar en rojo
-    mov r2, #33            // Longitud del texto
+    ldr r1, =textorojo       // Cargar el texto a mostrar en rojo
+    ldr r2, =largo_textorojo // Longitud del texto
     bl escribir_rojo
 
     // Imprimir texto en verde
-    ldr r1, =textoverde    // Cargar el texto a mostrar en verde
-    mov r2, #34            // Longitud del texto
+    ldr r1, =textoverde       // Cargar el texto a mostrar en verde
+    ldr r2, =largo_textoverde // Longitud del texto
     bl escribir_verde
 
     // Fin del programa
