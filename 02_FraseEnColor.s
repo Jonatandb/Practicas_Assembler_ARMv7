@@ -13,8 +13,9 @@
 
   // Escribe en pantalla lo que esté en la dirección seteada con ldr a r1
   // con la longitud de caracteres especificada en r2
+  // usando el color predeterminado (blanco)
   // Ej:
-  //  ldr r1, =texto_rojo
+  //  ldr r1, =mensaje
   //  mov r2, #6
   escribir:
     mov r0, #1             // Descriptor de archivo (stdout)
