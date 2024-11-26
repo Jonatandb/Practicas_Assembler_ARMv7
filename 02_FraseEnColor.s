@@ -16,7 +16,7 @@
   // usando el color predeterminado (blanco)
   // Ej:
   //  ldr r1, =mensaje
-  //  mov r2, #6
+  //  mov r2, #6  // alternativa: ldr r2, =largo_mensaje
   escribir:
     mov r0, #1             // Descriptor de archivo (stdout)
     mov r7, #4             // syscall número 4: Escribir
